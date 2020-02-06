@@ -1,11 +1,12 @@
-int rightMoter_o1 = 2;
-int rightMoter_o2 = 3;
-int leftMoter_o1 = 7;
-int leftMoter_o2 = 4;
+int rightMoter_o1 = 5;
+int rightMoter_o2 = 6;
+int leftMoter_o1 = 8;
+int leftMoter_o2 = 9;
 
 int analogPin0 = 0;
 int analogPin1 = 1;
-int val = 0;
+double val = 0;
+double bias = 0.0048;
 
 void setup() {
   // put your setup code here, to run once:
@@ -18,10 +19,11 @@ void setup() {
 }
 
 void loop() {
-  val = analogRead(analogPin0);
+  val = double(analogRead(analogPin0)*bias);
   Serial.println(val);
-  if(val > 500) {
+  if(val < 1) {
     motorMove(0);
+    delay(1000000);
   } else {
     motorMove(1);
   }
@@ -34,14 +36,14 @@ void motorMove(int Switch){
   switch (Switch) {
     case 0:
       digitalWrite(rightMoter_o1, HIGH);
-      digitalWrite(rightMoter_o2, LOW);
+      digitalWrite(rightMoter_o2, HIGH);
       digitalWrite(leftMoter_o1, HIGH);
-      digitalWrite(leftMoter_o2, LOW);
+      digitalWrite(leftMoter_o2, HIGH);
       break;
     case 1:
-      digitalWrite(rightMoter_o1, LOW);
+      digitalWrite(rightMoter_o1, HIGH);
       digitalWrite(rightMoter_o2, LOW);
-      digitalWrite(leftMoter_o1, LOW);
+      digitalWrite(leftMoter_o1, HIGH);
       digitalWrite(leftMoter_o2, LOW);
       break;
   }

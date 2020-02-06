@@ -1,7 +1,7 @@
-int rightMoter_o1 = 2;
-int rightMoter_o2 = 3;
-int leftMoter_o1 = 7;
-int leftMoter_o2 = 4;
+int rightMoter_o1 = 5;
+int rightMoter_o2 = 6;
+int leftMoter_o1 = 8;
+int leftMoter_o2 = 9;
 int analogPin0 = 0;
 int analogPin1 = 1;
 
@@ -9,8 +9,9 @@ double leftVal = 0;
 double rightVal = 0;
 double bias = 0.0048;
 
-int limit = 1.0;
-double d = 1;
+double limitL = 1;
+double limitR = 1;
+double d = 5;
 
 void setup() {
   // put your setup code here, to run once:
@@ -29,24 +30,13 @@ void loop() {
   Serial.println(rightVal);
   Serial.println("\n");
 
-  if(leftVal <= limit) {
-    if(rightVal <=limit) {
-      motorMove(0);
-      Serial.println("BACK");
-    }
-    else {
-      motorMove(1);
-      Serial.println("TURN RIGHT");
-    }
-  }else {
-    if(rightVal <= limit) {
-      motorMove(2);
-      Serial.println("TURN LEFT");
-    }
-    else {
-      motorMove(3);
-      Serial.println("STRAIGHT");
-    }
+  if(leftVal <= limitL && rightVal <= limitR) {
+    motorMove(0);
+  }
+  else if(leftVal <= limitL) {
+    motorMove(1);
+  }else if(rightVal <= limitR){
+    motorMove(2);
   }
   delay(d);
   // put your main code here, to run repeatedly:
@@ -64,12 +54,12 @@ void motorMove(int Switch){
     case 1:
       digitalWrite(rightMoter_o1, HIGH);
       digitalWrite(rightMoter_o2, LOW);
-      digitalWrite(leftMoter_o1, LOW);
-      digitalWrite(leftMoter_o2, LOW);
+      digitalWrite(leftMoter_o1, HIGH);
+      digitalWrite(leftMoter_o2, HIGH);
       break;
       case 2:
-      digitalWrite(rightMoter_o1, LOW);
-      digitalWrite(rightMoter_o2, LOW);
+      digitalWrite(rightMoter_o1, HIGH);
+      digitalWrite(rightMoter_o2, HIGH);
       digitalWrite(leftMoter_o1, HIGH);
       digitalWrite(leftMoter_o2, LOW);
       break;
@@ -78,6 +68,7 @@ void motorMove(int Switch){
       digitalWrite(rightMoter_o2, LOW);
       digitalWrite(leftMoter_o1, HIGH);
       digitalWrite(leftMoter_o2, LOW);
+      delay(20);
       break;
   }
 }
